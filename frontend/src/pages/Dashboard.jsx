@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import image from '../assets/project_nameAndlogo.png';
+import image from '../assets/project_nameAndLogo.png';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Dashboard = () => {
