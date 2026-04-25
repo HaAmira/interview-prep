@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import InterviewRoom from './pages/InterviewRoom';
 import Feedback from './pages/Feedback';
+import History from './pages/History';
+import Navbar from './components/Navbar';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
@@ -15,6 +17,7 @@ const PrivateRoute = ({ children }) => {
 function App() {
   return (
     <Router>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" />} />
         <Route path="/login" element={<Login />} />
@@ -39,6 +42,14 @@ function App() {
           element={
             <PrivateRoute>
               <Feedback />
+            </PrivateRoute>
+          } 
+        />
+        <Route 
+          path="/history" 
+          element={
+            <PrivateRoute>
+              <History />
             </PrivateRoute>
           } 
         />

@@ -8,7 +8,9 @@ const messageSchema = new mongoose.Schema({
 
 const interviewSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    targetRole: { type: String, required: true },
+    interviewType: { type: String, enum: ['role', 'tech-stack'], default: 'role' },
+    techStack: { type: String },
+    targetRole: { type: String },
     targetCompany: { type: String },
     jobDescription: { type: String },
     messages: [messageSchema],

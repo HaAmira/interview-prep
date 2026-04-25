@@ -19,12 +19,19 @@ const protect = (req, res, next) => {
 
 router.post('/start', protect, async (req, res) => {
     try {
-        const { targetRole, targetCompany, jobDescription } = req.body;
+        const { targetRole, targetCompany, jobDescription, interviewType, techStack } = req.body;
         
-        const systemPrompt = `You are an expert technical and behavioral interviewer for ${targetCompany || 'a top technology company'} interviewing a candidate for the role of ${targetRole}. 
+        let systemPrompt = '';
+        if (interviewType === 'tech-stack') {
+             systemPrompt = `You are an expert technical interviewer specializing in the ${techStack} technology stack. 
+Your goal is to conduct a realistic, rigorous technical interview focusing on ${techStack}. Ask one question at a time. Probe deeper into their answers. If they don't know something, behave like a real interviewer. 
+Start by greeting the candidate, introducing yourself briefly, and asking the first technical question about ${techStack}.`;
+        } else {
+             systemPrompt = `You are an expert technical and behavioral interviewer for ${targetCompany || 'a top technology company'} interviewing a candidate for the role of ${targetRole}. 
 Job Description: ${jobDescription || 'N/A'}. 
 Your goal is to conduct a realistic, rigorous interview. Ask one question at a time. Probe deeper into their answers. If they don't know something, behave like a real interviewer. 
 Start by greeting the candidate, introducing yourself briefly, and asking the first question.`;
+        }
 
         // Initialize Groq chat
         const messages = [
@@ -42,6 +49,8 @@ Start by greeting the candidate, introducing yourself briefly, and asking the fi
 
         const interview = new Interview({
             userId: req.user.id,
+            interviewType: interviewType || 'role',
+            techStack,
             targetRole,
             targetCompany,
             jobDescription,
@@ -131,6 +140,17 @@ Please provide a comprehensive feedback report for the candidate. Focus on the f
 
         res.status(200).json({ feedback: feedbackText, score });
 
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.get('/history', protect, async (req, res) => {
+    try {
+        const interviews = await Interview.find({ userId: req.user.id })
+            .sort({ createdAt: -1 })
+            .select('-messages'); // exclude messages to keep payload small
+        res.status(200).json(interviews);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
