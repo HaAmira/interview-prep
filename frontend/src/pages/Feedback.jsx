@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Feedback = () => {
   const { id } = useParams();
@@ -13,7 +14,7 @@ const Feedback = () => {
     const fetchInterview = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:5000/api/interview/${id}`, {
+        const res = await axios.get(`${API_URL}/api/interview/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setInterview(res.data);

@@ -3,6 +3,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import image from '../assets/project_nameAndlogo.png';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Dashboard = () => {
   const { user, logout } = useContext(AuthContext);
@@ -18,7 +19,7 @@ const Dashboard = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.post('http://localhost:5000/api/interview/start', {
+      const res = await axios.post(`${API_URL}/api/interview/start`, {
         targetRole: role,
         targetCompany: company,
         jobDescription: jd

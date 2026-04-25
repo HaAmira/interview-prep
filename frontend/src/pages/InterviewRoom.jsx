@@ -534,6 +534,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { Mic, Send } from 'lucide-react';
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const InterviewRoom = () => {
 
@@ -953,7 +954,7 @@ const handleListen = async () => {
 
       const res =
         await axios.post(
-          `http://localhost:5000/api/interview/${id}/reply`,
+          `${API_URL}/api/interview/${id}/reply`,
           { content: userMessage },
           {
             headers: {
@@ -1006,7 +1007,7 @@ const handleListen = async () => {
         localStorage.getItem('token');
 
       await axios.post(
-        `http://localhost:5000/api/interview/${id}/end`,
+        `${API_URL}/api/interview/${id}/end`,
         {},
         {
           headers: {
