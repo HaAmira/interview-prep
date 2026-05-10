@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+// import image from '../assets/project_nameAndLogo.png';
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Dashboard = () => {
+  // const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme ? savedTheme === 'dark' : true;
+  });
 
   const [role, setRole] = useState('');
   const [company, setCompany] = useState('');
@@ -27,9 +34,9 @@ const Dashboard = () => {
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      
+
       const { interviewId, message } = res.data;
-      navigate(`/interview/${interviewId}`, { state: { initialMessage: message }});
+      navigate(`/interview/${interviewId}`, { state: { initialMessage: message } });
     } catch (err) {
       console.error(err);
       alert(`Failed to start interview check ${err}`);
@@ -42,20 +49,20 @@ const Dashboard = () => {
     <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto', width: '100%' }}>
 
       <div className="glass-panel animate-fade-in">
-        <h2 style={{ marginBottom: '1.5rem', color: 'var(--text-main)' }}>Start New Interview</h2>
-        
+        <h2 style={{ marginBottom: '1.5rem' }}>Start New Interview</h2>
+
         <div className="tab-buttons" style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
-          <button 
+          <button
             type="button"
-            className={`btn ${interviewType === 'role' ? '' : 'btn-secondary'}`} 
+            className={`btn ${interviewType === 'role' ? '' : 'btn-secondary'}`}
             onClick={() => setInterviewType('role')}
             style={{ flex: 1 }}
           >
             Role Based
           </button>
-          <button 
+          <button
             type="button"
-            className={`btn ${interviewType === 'tech-stack' ? '' : 'btn-secondary'}`} 
+            className={`btn ${interviewType === 'tech-stack' ? '' : 'btn-secondary'}`}
             onClick={() => setInterviewType('tech-stack')}
             style={{ flex: 1 }}
           >
@@ -68,19 +75,19 @@ const Dashboard = () => {
             <>
               <div className="input-group">
                 <label>Target Role (e.g. Frontend Developer)</label>
-                <input type="text" className="input-field" value={role} onChange={e => setRole(e.target.value)} required />
+                <input type="text" className={`${isDarkMode ? 'input-field' : 'input-field-light'}`} value={role} onChange={e => setRole(e.target.value)} required />
               </div>
               <div className="input-group">
                 <label>Target Company (e.g. Google) - Optional</label>
-                <input type="text" className="input-field" value={company} onChange={e => setCompany(e.target.value)} />
+                <input type="text" className={`${isDarkMode ? 'input-field' : 'input-field-light'}`} value={company} onChange={e => setCompany(e.target.value)} />
               </div>
               <div className="input-group">
                 <label>Job Description - Optional</label>
-                <textarea 
-                  className="input-field" 
+                <textarea
+                  className={`${isDarkMode ? 'input-field' : 'input-field-light'}`}
                   rows="5"
-                  value={jd} 
-                  onChange={e => setJd(e.target.value)} 
+                  value={jd}
+                  onChange={e => setJd(e.target.value)}
                   placeholder="Paste the job description here..."
                   style={{ resize: 'vertical' }}
                 />
@@ -90,7 +97,7 @@ const Dashboard = () => {
             <>
               <div className="input-group">
                 <label>Tech Stack (e.g. ReactJS, Node.js, Python, AWS)</label>
-                <input type="text" className="input-field" value={techStack} onChange={e => setTechStack(e.target.value)} required placeholder="Enter the specific technologies..." />
+                <input type="text" className={`${isDarkMode ? 'input-field' : 'input-field-light'}`} value={techStack} onChange={e => setTechStack(e.target.value)} required placeholder="Enter the specific technologies..." />
               </div>
             </>
           )}

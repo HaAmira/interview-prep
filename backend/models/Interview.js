@@ -16,6 +16,7 @@ const interviewSchema = new mongoose.Schema({
     messages: [messageSchema],
     status: { type: String, enum: ['in-progress', 'completed'], default: 'in-progress' },
     feedback: { type: String },
+    feedbackReport: { type: mongoose.Schema.Types.Mixed },
     score: { type: Number },
     createdAt: { type: Date, default: Date.now }
 });

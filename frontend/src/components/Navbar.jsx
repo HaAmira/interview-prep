@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../context/auth-context';
 import { Sun, Moon, History, User, LogOut, ChevronDown } from 'lucide-react';
 import image from '../assets/project_nameAndLogo1.png';
 import DarkImage from '../assets/project_nameAndLogo_Dark13.png';
